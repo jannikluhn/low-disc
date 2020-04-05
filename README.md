@@ -1,14 +1,30 @@
 # low-disc
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library of [low discrepancy
+sequence](https://en.wikipedia.org/wiki/Low-discrepancy_sequence) algorithms.
+
+The following algorithms are implemented:
+
+* Van der Corput sequence (scrambled and unscrambled)
+* Halton sequence (scrambled and unscrambled)
 
 ## Usage
 
-FIXME
+### Van der Corput Sequence
+
+```Clojure
+(take 4 (low-disc.vdc/vdc 2))         ;;=> (1/2 1/4 3/4 1/8)
+```
+
+### Halton Sequence
+
+```Clojure
+(take 4 (low-disc.halton/halton-2d))  ;;=> ([1/2 2/3] [1/4 1/3] [3/4 2/9] [1/8 8/9])
+```
 
 ## License
 
-Copyright © 2020 FIXME
+Copyright © 2020 Jannik Luhn
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
