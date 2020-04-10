@@ -13,7 +13,8 @@
 (deftest vdc-tests
   (is (= (take 4 (vdc/vdc 2)) [1/2 1/4 3/4 1/8]))
   (is (every? #(< 0 % 1) (take 1000 (vdc/vdc 29))))
-  (is (every? #(< 0 % 1) (take 1000 (vdc/vdc-scr [0 3 1 4 2] 5)))))
+  (is (every? #(< 0 % 1) (take 1000 (vdc/vdc-scr [0 3 1 4 2] 5))))
+  (is (= (take 4 (vdc/vdc 2)) (vdc/vdc 2 4))))
 
 (deftest halton-tests
   (is (= (take 4 (halton/halton [2 3])) [[1/2 1/3] [1/4 2/3] [3/4 1/9] [1/8 4/9]]))
@@ -22,7 +23,8 @@
     (is (every? #(= (count %) 2) h)))
   (is (= (count (first (halton/halton-nd 1))) 1))
   (is (= (count (first (halton/halton-nd 2))) 2))
-  (is (= (count (first (halton/halton-nd 15))) 15)))
+  (is (= (count (first (halton/halton-nd 15))) 15))
+  (is (= (take 4 (halton/halton-4d)) (halton/halton-4d 4))))
 
 (deftest hammersley-tests
   (is (= (count (hammersley/hammersley-5d 100)) 100))

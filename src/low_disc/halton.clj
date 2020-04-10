@@ -27,26 +27,38 @@
    53 [0 26 40 9 33 16 49 4 36 21 45 12 29 6 51 23 38 14 43 1 30 19 47 10 34 24 42 3 27 52 15 18 39
        7 46 22 32 5 48 13 35 25 8 44 31 17 50 2 37 20 28 11 41]})
 
-(defn halton-scr [ps bs]
+(defn halton-scr
   "Returns the Halton sequence for bases bs scrambled with permutations ps."
-  (apply map vector (map vdc/vdc-scr ps bs)))
+  ([ps bs]
+   (apply map vector (map vdc/vdc-scr ps bs)))
+  ([ps bs l]
+   (take l (halton-scr))))
 
-(defn halton [bs]
-  "Returns the unscrambled Halton sequence for bases bs"
-  (halton-scr (map range bs) bs))
+(defn halton 
+  "Returns the unscrambled Halton sequence for bases bs.
 
-(defn halton-nd [n]
-  {:pre [(<= n (max (count permutations)
-                    (count primes)))]}
+  Without an explicitly given length l, an infinite sequence is created."
+  ([bs]
+   (halton-scr (map range bs) bs))
+  ([bs l]
+   (take l (halton bs))))
+
+(defn halton-nd
   "Returns an n dimensional scrambled Halton sequence.
 
+  Without an explicitly given length l, an infinite sequence is created
+
   The first n prime numbers act as bases.
-  
+
   Scrambling is performed using the permutations found using Braaten and Weller's algorithm by
   Vandewoestyne and Cools (https://doi.org/10.1016/j.cam.2005.05.022)."
-  (let [bs (take n primes)
-        ps (map permutations bs)]
-    (halton-scr ps bs)))
+  ([n]
+   {:pre [(<= n (max (count permutations)
+                    (count primes)))]}
+   (let [bs (take n primes)
+         ps (map permutations bs)]
+     (halton-scr ps bs)))
+  ([n l] (take l (halton-nd n))))
 
 ; define halton-1d up until halton-16d
 (dotimes [n 16]
