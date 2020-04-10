@@ -4,13 +4,10 @@
 (defn hammersley-nd [n l]
   "Return the n-dimensional Hammersley set of size l.
 
-  The implementation is based on the scrambled Halton sequence.
-  
-  If n is too high, nil is returned."
-  (if-let [base (halton/halton-nd (dec n))]
-    (->> base
-         (map-indexed #(conj %2 (/ %1 l)))
-         (take l))))
+  The implementation is based on the scrambled Halton sequence."
+  (->> (halton/halton-nd (dec n))
+       (map-indexed #(conj %2 (/ %1 l)))
+       (take l)))
 
 (defn hammersley-1d [n] (hammersley-nd 1 n))
 (defn hammersley-2d [n] (hammersley-nd 2 n))

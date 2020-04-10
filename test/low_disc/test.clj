@@ -22,8 +22,7 @@
     (is (every? #(= (count %) 2) h)))
   (is (= (count (first (halton/halton-nd 1))) 1))
   (is (= (count (first (halton/halton-nd 2))) 2))
-  (is (= (count (first (halton/halton-nd 15))) 15))
-  (is (nil? (halton/halton-nd 17))))
+  (is (= (count (first (halton/halton-nd 15))) 15)))
 
 (deftest hammersley-tests
   (is (= (count (hammersley/hammersley-5d 100)) 100))

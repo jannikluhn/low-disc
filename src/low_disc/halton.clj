@@ -36,20 +36,17 @@
   (halton-scr (map range bs) bs))
 
 (defn halton-nd [n]
+  {:pre [(<= n (max (count permutations)
+                    (count primes)))]}
   "Returns an n dimensional scrambled Halton sequence.
 
   The first n prime numbers act as bases.
   
   Scrambling is performed using the permutations found using Braaten and Weller's algorithm by
-  Vandewoestyne and Cools (https://doi.org/10.1016/j.cam.2005.05.022).
-  
-  Due to the limited number of hard coded permutations, n must not be greater than 16. Otherwise,
-  nil is returned."
+  Vandewoestyne and Cools (https://doi.org/10.1016/j.cam.2005.05.022)."
   (let [bs (take n primes)
         ps (map permutations bs)]
-    (if (= (count bs) (count ps) n)
-      (halton-scr ps bs)
-      nil)))
+    (halton-scr ps bs)))
 
 (defn halton-1d [] (halton-nd 1))
 (defn halton-2d [] (halton-nd 2))
