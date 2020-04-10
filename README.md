@@ -10,6 +10,39 @@ The following sequences are implemented:
 * Hammersley sequence
 * Uniform random sequence (for comparison)
 
+## Illustrations
+
+### Halton Sequence
+
+#### Unscrambled and scrambled, dimensions 1 and 2
+
+[](https://github.com/jannikluhn/low-disc/raw/master/img/halton-unscr.png)
+[](https://github.com/jannikluhn/low-disc/raw/master/img/halton.png)
+
+
+#### Unscrambled and scrambled, dimensions 15 and 16
+
+[](https://github.com/jannikluhn/low-disc/raw/master/img/halton-unscr-high.png)
+[](https://github.com/jannikluhn/low-disc/raw/master/img/halton-high.png)
+
+### Hammersley Sequence
+
+#### Unscrambled and scrambled, dimensions 1 and 2
+
+[](https://github.com/jannikluhn/low-disc/raw/master/img/hammersley-unscr.png)
+[](https://github.com/jannikluhn/low-disc/raw/master/img/hammersley.png)
+
+
+#### Unscrambled and scrambled, dimensions 15 and 16
+
+[](https://github.com/jannikluhn/low-disc/raw/master/img/hammersley-unscr-high.png)
+[](https://github.com/jannikluhn/low-disc/raw/master/img/hammersley-high.png)
+
+### Uniform
+
+[](https://github.com/jannikluhn/low-disc/raw/master/img/uniform.png)
+
+
 ## Usage
 
 All sequence functions return lazy sequences of points. Points are `n`-dimensional vectors whose
