@@ -48,19 +48,8 @@
         ps (map permutations bs)]
     (halton-scr ps bs)))
 
-(defn halton-1d [] (halton-nd 1))
-(defn halton-2d [] (halton-nd 2))
-(defn halton-3d [] (halton-nd 3))
-(defn halton-4d [] (halton-nd 4))
-(defn halton-5d [] (halton-nd 5))
-(defn halton-6d [] (halton-nd 6))
-(defn halton-7d [] (halton-nd 7))
-(defn halton-8d [] (halton-nd 8))
-(defn halton-9d [] (halton-nd 9))
-(defn halton-10d [] (halton-nd 10))
-(defn halton-11d [] (halton-nd 11))
-(defn halton-12d [] (halton-nd 12))
-(defn halton-13d [] (halton-nd 13))
-(defn halton-14d [] (halton-nd 14))
-(defn halton-15d [] (halton-nd 15))
-(defn halton-16d [] (halton-nd 16))
+; define halton-1d up until halton-16d
+(dotimes [n 16]
+  (intern *ns*
+          (symbol (str "halton-" n "d"))
+          (partial halton-nd n)))
