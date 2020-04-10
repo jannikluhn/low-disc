@@ -1,6 +1,37 @@
-(ns low-disc.halton
-  (:require [low-disc.vdc :as vdc]))
+(ns low-disc.core
+  (:require [low-disc.utils :refer [digits-rev]]))
 
+;
+; Van der Corput
+;
+(defn vdc-el [p b n]
+  "Returns the nth element of the base b van der Corput sequence scrambled with permutation p."
+  (->> (map #(/ %1 %2)
+            (map #(nth p %) (digits-rev b n))
+            (iterate #(* b %) b))
+       (reduce +)))
+
+(defn vdc
+  "Returns the base b van der Corput sequence scrambled with permutation p.
+
+  Without an explicitly given length l, an infinite sequence is created."
+  ([p b]
+   (->> (range)
+        (map inc)
+        (map #(vdc-el p b %))))
+  ([p b l]
+   (take l (vdc p b))))
+
+(defn vdc-unscr
+  "Returns the unscrambled base b van der Corput sequence.
+
+  Without an explicitly given length l, an infinite sequence is created."
+  ([b] (vdc (range b) b))
+  ([b l] (take l (vdc-unscr b))))
+
+;
+; Halton
+;
 (def ^:private primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53])
 
 (def ^:private permutations
@@ -30,7 +61,7 @@
 (defn halton
   "Returns the Halton sequence for bases bs scrambled with permutations ps."
   ([ps bs]
-   (apply map vector (map vdc/vdc ps bs)))
+   (apply map vector (map vdc ps bs)))
   ([ps bs l]
    (take l (halton))))
 
@@ -79,3 +110,40 @@
   (intern *ns*
           (symbol (str "halton-unscr-" n "d"))
           (partial halton-nd n)))
+
+;
+; Hammersley
+;
+(defn hammersley-nd [n l]
+  "Return the n-dimensional Hammersley set of size l.
+
+  The implementation is based on the scrambled Halton sequence."
+  (->> (halton-nd (dec n))
+       (map-indexed #(conj %2 (/ %1 l)))
+       (take l)))
+
+; define uniform-1d up until uniform-16d
+(dotimes [n 16]
+  (intern *ns*
+          (symbol (str "hammersley-" n "d"))
+          (partial hammersley-nd n)))
+
+;
+; Uniform
+;
+(defn uniform-nd-point [n]
+  "Return a single n-dimensional point chosen uniformly at random."
+  (into [] (repeatedly n rand)))
+
+(defn uniform-nd
+  "Return a lazy sequence of n dimensional points chosen independently and uniformly at random.
+
+  Without an explicitly given length l, an infinite sequence is created."
+  ([n] (repeatedly (partial uniform-nd-point n)))
+  ([n l] (take l (uniform-nd n))))
+
+; define uniform-1d up until uniform-16d
+(dotimes [n 16]
+  (intern *ns*
+          (symbol (str "uniform-" n "d"))
+          (partial uniform-nd n)))
