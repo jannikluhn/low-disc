@@ -66,7 +66,7 @@
    (take l (halton))))
 
 (defn halton-nd
-  "Returns an n dimensional scrambled Halton sequence.
+  "Returns an n-dimensional scrambled Halton sequence.
 
   Without an explicitly given length l, an infinite sequence is created
 
@@ -92,17 +92,17 @@
    (take l (halton-unscr bs))))
 
 (defn halton-unscr-nd
-  "Returns an n dimensional unscrambled Halton sequence.
+  "Returns an n-dimensional unscrambled Halton sequence.
 
   Without an explicitly given length l, an infinite sequence is created
 
   The first n prime numbers act as bases."
   ([n]
    {:pre [(<= n (count primes))]}
-   (halton-unscr (take n primes) n))
+   (halton-unscr (take n primes)))
   ([n l] (take l (halton-unscr-nd n))))
 
-; define halton-1d and halton-unscr-1d up until halton-16d and halton-unscr-16d
+; halton-1d ... halton-16d, halton-unscr-1d ... halton-unscr-16d
 (dotimes [n 16]
   (intern *ns*
           (symbol (str "halton-" n "d"))
@@ -115,18 +115,29 @@
 ; Hammersley
 ;
 (defn hammersley-nd [n l]
-  "Return the n-dimensional Hammersley set of size l.
+  "Return the scrambled n-dimensional Hammersley set of size l.
 
   The implementation is based on the scrambled Halton sequence."
   (->> (halton-nd (dec n))
        (map-indexed #(conj %2 (/ %1 l)))
        (take l)))
 
-; define uniform-1d up until uniform-16d
+(defn hammersley-unscr-nd [n l]
+  "Return the unscrambled n-dimensional Hammersley set of size l.
+
+  The implementation is based on the unscrambled Halton sequence."
+  (->> (halton-unscr-nd (dec n))
+       (map-indexed #(conj %2 (/ %1 l)))
+       (take l)))
+
+; hammersley-1d ... hammersley-16d, hammersley-unscr-1d ... hammersley-16d
 (dotimes [n 16]
   (intern *ns*
           (symbol (str "hammersley-" n "d"))
-          (partial hammersley-nd n)))
+          (partial hammersley-nd n))
+  (intern *ns*
+          (symbol (str "hammersley-unscr-" n "d"))
+          (partial hammersley-unscr-nd n)))
 
 ;
 ; Uniform
@@ -136,13 +147,13 @@
   (into [] (repeatedly n rand)))
 
 (defn uniform-nd
-  "Return a lazy sequence of n dimensional points chosen independently and uniformly at random.
+  "Return a lazy sequence of n-dimensional points chosen independently and uniformly at random.
 
   Without an explicitly given length l, an infinite sequence is created."
   ([n] (repeatedly (partial uniform-nd-point n)))
   ([n l] (take l (uniform-nd n))))
 
-; define uniform-1d up until uniform-16d
+; uniform-1d ... uniform-16d
 (dotimes [n 16]
   (intern *ns*
           (symbol (str "uniform-" n "d"))
