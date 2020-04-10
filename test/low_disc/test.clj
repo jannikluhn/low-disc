@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [low-disc.utils :refer [digits-rev]]
             [low-disc.vdc :as vdc]
-            [low-disc.halton :as halton]))
+            [low-disc.halton :as halton]
+            [low-disc.hammersley :as hammersley]))
 
 
 (deftest utils-tests
@@ -23,3 +24,7 @@
   (is (= (count (first (halton/halton-nd 2))) 2))
   (is (= (count (first (halton/halton-nd 15))) 15))
   (is (nil? (halton/halton-nd 17))))
+
+(deftest hammersley-tests
+  (is (= (count (hammersley/hammersley-5d 100)) 100))
+  (is (every? #(= % 5) (map count (hammersley/hammersley-5d 100)))))
