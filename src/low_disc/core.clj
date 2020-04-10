@@ -61,9 +61,12 @@
 (defn halton
   "Returns the Halton sequence for bases bs scrambled with permutations ps."
   ([ps bs]
-   (apply map vector (map vdc ps bs)))
+   (let [vdcs (map vdc ps bs)]
+     (if (seq vdcs)
+       (apply map vector vdcs)
+       (repeat []))))
   ([ps bs l]
-   (take l (halton))))
+   (take l (halton ps bs))))
 
 (defn halton-nd
   "Returns an n-dimensional scrambled Halton sequence.
@@ -103,13 +106,13 @@
   ([n l] (take l (halton-unscr-nd n))))
 
 ; halton-1d ... halton-16d, halton-unscr-1d ... halton-unscr-16d
-(dotimes [n 16]
+(doseq [n (range 1 17)]
   (intern *ns*
           (symbol (str "halton-" n "d"))
           (partial halton-nd n))
   (intern *ns*
           (symbol (str "halton-unscr-" n "d"))
-          (partial halton-nd n)))
+          (partial halton-unscr-nd n)))
 
 ;
 ; Hammersley
@@ -131,7 +134,7 @@
        (take l)))
 
 ; hammersley-1d ... hammersley-16d, hammersley-unscr-1d ... hammersley-16d
-(dotimes [n 16]
+(doseq [n (range 1 17)]
   (intern *ns*
           (symbol (str "hammersley-" n "d"))
           (partial hammersley-nd n))
@@ -154,7 +157,7 @@
   ([n l] (take l (uniform-nd n))))
 
 ; uniform-1d ... uniform-16d
-(dotimes [n 16]
+(doseq [n (range 1 17)]
   (intern *ns*
           (symbol (str "uniform-" n "d"))
           (partial uniform-nd n)))
