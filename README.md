@@ -10,6 +10,16 @@ The following sequences are implemented:
 * Hammersley sequence
 * Uniform random sequence (for comparison)
 
+## Installation
+
+Latest version: 0.1.0
+
+Leiningen dependency information:
+
+```Clojure
+[low-disc "0.1.0"]
+```
+
 ## Illustrations
 
 ### Uniform
